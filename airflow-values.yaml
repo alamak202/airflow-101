@@ -1,0 +1,34 @@
+# airflow-values.yaml
+
+# Set the executor to KubernetesExecutor
+executor: KubernetesExecutor
+
+# Configuration for the Kubernetes Executor
+kubernetes:
+  # If you have multiple worker node pools, you can specify tolerations and node selectors
+  # to schedule task pods on specific nodes.
+  workerTolerations: []
+  #   - key: "group"
+  #     operator: "Equal"
+  #     value: "data-processing"
+  #     effect: "NoSchedule"y
+
+# Resource allocation for the webserver
+webserver:
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
+# Resource allocation for the scheduler
+scheduler:
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
