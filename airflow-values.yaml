@@ -15,6 +15,13 @@ kubernetes:
 
 # Resource allocation for the webserver
 webserver:
+  defaultUser:
+    enabled: true
+    role: "Admin"
+    username: "admin"
+    # Set your own password here before installing
+    password: "Admin123"
+
   resources:
     requests:
       cpu: "200m"
@@ -32,3 +39,14 @@ scheduler:
     limits:
       cpu: "1"
       memory: "2Gi"
+
+# Configure DAGs to be synced from a git repository
+dags:
+  gitSync:
+    enabled: true
+    repo: "https://github.com/alamak202/airflow-101.git" # Replace with your DAGs repository
+    branch: "main" # Or your desired branch
+    subPath: "dag_examples"
+    # If your repository is private, you can use a secret:
+    # credentialsSecret: "my-git-credentials-secret"
+
