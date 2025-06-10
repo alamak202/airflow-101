@@ -61,7 +61,7 @@ with DAG(
     # Task 1: A BashOperator that prints a starting message.
     task_start = BashOperator(
         task_id="start_task",
-        bash_command="echo 'Starting the sample DAG... Let's go!'",
+        bash_command='echo "Starting the sample DAG... Let\'s go!"',
     )
 
     # Task 2: A BashOperator that uses Jinja templating to print the execution date.
