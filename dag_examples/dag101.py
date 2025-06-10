@@ -16,7 +16,7 @@ def print_a_message(dag_run):
     """
     execution_date = dag_run.execution_date
     print(f"Hello from the PythonOperator! 👋")
-    print(f"This DAG run is for the date: {execution_date.to_date_string()}")
+    print(f"This DAG run is for the date: {execution_date.date()}")
     return "Message printed successfully!"
 
 
