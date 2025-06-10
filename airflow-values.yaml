@@ -50,3 +50,9 @@ dags:
     # If your repository is private, you can use a secret:
     # credentialsSecret: "my-git-credentials-secret"
 
+logs:
+  persistence:
+    # -- Enable persistence for logs
+    enabled: true
+    # -- Size of the PVC created
+    size: 5Gi
