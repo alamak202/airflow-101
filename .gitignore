@@ -1,2 +1,6 @@
 *.swp
-
+airflow/
+minio/
+default-airflow-values.yaml
+rendered-minio-manifest.yaml
+get_helm.sh

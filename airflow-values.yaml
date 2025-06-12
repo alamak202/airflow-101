@@ -13,6 +13,33 @@ kubernetes:
   #     value: "data-processing"
   #     effect: "NoSchedule"y
 
+
+# env:
+#   # static way of defining secrets
+#   # - name: AIRFLOW_CONN_MINIO_S3
+#   #   value: 'aws://admin:password123@?endpoint_url=http%3A%2F%2Fminio.airflow.svc.cluster.local%3A9000'
+
+#   # defining secrets via k8s secrets
+#   - name: AIRFLOW_CONN_MINIO_S3
+#     valueFrom:
+#       secretKeyRef:
+#         # The name of the Secret object we created in Step 1
+#         name: airflow-minio-connection-secret
+#         # The key within the Secret that holds the value
+#         key: connection
+
+
+# --- NEW (Correct and Secure) ---
+# This block allows for the full Kubernetes env var syntax.
+# The '|' is important as it defines a multi-line string.
+extraEnv: |
+  - name: AIRFLOW_CONN_MINIO_S3
+    valueFrom:
+      secretKeyRef:
+        name: airflow-minio-connection-secret
+        key: connection
+
+
 # Resource allocation for the webserver
 webserver:
   defaultUser:
@@ -21,14 +48,15 @@ webserver:
     username: "admin"
     # Set your own password here before installing
     password: "Admin123"
-
   resources:
     requests:
       cpu: "200m"
-      memory: "512Mi"
+      memory: "1Gi"
     limits:
       cpu: "1"
-      memory: "1Gi"
+      memory: "3Gi"
+  service:
+    type: LoadBalancer
 
 # Resource allocation for the scheduler
 scheduler:
@@ -40,6 +68,14 @@ scheduler:
       cpu: "1"
       memory: "2Gi"
 
+# triggerer
+
+
+triggerer:
+  persistence:
+    enabled: false
+
+
 # Configure DAGs to be synced from a git repository
 dags:
   gitSync:
@@ -50,9 +86,19 @@ dags:
     # If your repository is private, you can use a secret:
     # credentialsSecret: "my-git-credentials-secret"
 
+
+# --- NEW: Remote Logging Configuration ---
+config:
+  logging:
+    remote_logging: 'True'
+    remote_base_log_folder: 's3://airflow/logs'
+    remote_log_conn_id: 'minio_s3'
+  # connections: # not working
+  #   # The value must be a single Airflow Connection URI string.
+  #   minio_s3: 's3://admin:password123@minio.airflow.svc.cluster.local:9000'
+
+
+
 logs:
   persistence:
-    # -- Enable persistence for logs
-    enabled: true
-    # -- Size of the PVC created
-    size: 5Gi
+    enabled: false

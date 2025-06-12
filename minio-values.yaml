@@ -1,0 +1,35 @@
+# minio-values.yaml
+# Explicitly override the startup command for a single-drive standalone instance
+command:
+  - "minio"
+  - "server"
+  - "/export"
+  - "--console-address"
+  - ":9001"
+
+# Set the deployment mode
+# mode: standalone
+mode: distributed
+replicas: 3
+# drivesPerNode: 1
+
+# Authentication
+auth:
+  rootUser: admin
+  rootPassword: password123
+
+# Bucket to be created
+buckets:
+  - name: airflow
+
+# Persistence and resource limits
+persistence:
+  size: 5Gi
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 200m
+
