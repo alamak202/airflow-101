@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import hashlib
 
 from airflow.decorators import dag, task
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.http.operators.http import HttpOperator
 from airflow.providers.amazon.aws.operators.s3 import S3CreateObjectOperator
 
 # Default arguments for the DAG
@@ -33,7 +33,7 @@ def user_data_etl():
     """
 
     # Task to fetch user data from the API
-    fetch_user_data = SimpleHttpOperator(
+    fetch_user_data = HttpOperator(
         task_id='fetch_user_data',
         http_conn_id='user_api',          # Connection to https://reqres.in
         endpoint='api/users',
