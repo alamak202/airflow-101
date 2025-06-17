@@ -45,9 +45,18 @@ webserver:
   defaultUser:
     enabled: true
     role: "Admin"
-    username: "admin"
-    # Set your own password here before installing
-    password: "Admin123"
+  env:
+    - name: username
+      valueFrom:
+        secretKeyRef:
+          name: airflow-webserver-logins
+          key: username
+    - name: password
+      valueFrom:
+        secretKeyRef:
+          name: airflow-webserver-logins
+          key: password
+        
   resources:
     requests:
       cpu: "200m"
